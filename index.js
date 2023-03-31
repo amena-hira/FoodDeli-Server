@@ -36,10 +36,9 @@ async function run() {
             const result = await bookedTableCollection.insertOne(tablesBooked);
             res.send(result);
         })
-        app.put('/tableBooked', async (req, res) => {
+        app.patch('/tableBooked/:id', async (req, res) => {
             const id = req.params.id;
-            const filter = { _id: new ObjectId(id) };
-            const options = { upsert: true };
+            const query = { _id: new ObjectId(id) };
             const updatedDoc = {
                 $set: {
                     name: req.body.name,
@@ -50,8 +49,8 @@ async function run() {
                     personList: req.body.personList
                 }
             }
-            console.log(updatedDoc, filter)
-            const result = await bookedTableCollection.updateOne(filter, updatedDoc,options);
+            console.log(updatedDoc, query)
+            const result = await bookedTableCollection.updateOne(query, updatedDoc);
             console.log(result)
             res.send(result);
         })
